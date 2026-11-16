@@ -68,7 +68,7 @@
   function parseChat(raw){
     const lines=clean(raw).replace(/\r/g,'').split('\n'); const out=[]; let cur=null;
     // WhatsApp Desktop exports use brackets and an AM/PM suffix; mobile exports normally use 24-hour time.
-    const android=/^(?:\[)?(\d{1,2}[.\/]\d{1,2}[.\/]\d{2,4}),\s*(\d{1,2}:\d{2}(?::\d{2})?\s*(?:AM|PM|am|pm)?)(?:\])?\s*(?:-|–)?\s*([^:]+):\s*(.+)$/;
+    const android=/^(?:\[)?(\d{1,2}[.\/]\d{1,2}[.\/]\d{2,4}),\s*(\d{1,2}:\d{2}(?::\d{2})?)(?:\s*(?:AM|PM|am|pm)\]|\])?\s*(?:-|–)?\s*([^:]+):\s*(.+)$/;
     const timestamp=/^(?:\[)?\d{1,2}[.\/]\d{1,2}[.\/]\d{2,4},\s*\d{1,2}:\d{2}/;
     for(const line0 of lines){ const line=clean(line0); const m=line.match(android); if(m){ if(cur) out.push(cur); cur={author:clean(m[3]),text:clean(m[4])}; } else if(timestamp.test(line)){ if(cur) out.push(cur); cur=null; } else if(cur && line) cur.text += '\n'+line; }
     if(cur) out.push(cur);
